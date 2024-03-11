@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    <ul>
+        <li><input required type="text" name="username" placeholder="Имя пользователя"></li>
+        <li><input required type="email" name="email" placeholder="E-mail"></li>
+        <li><input required type="password" name="password" placeholder="Пароль"></li>
+        <li><input required type="password" name="password2" placeholder="Подтвердить пароль"></li>
+        <li><button type="submit">Зарегистрироваться</button></li>
+    </ul>
+    {% if passwords == False %}
+        <h3>Пароли не совпадают</h3>
+    {% endif %}
+    {% if user_exist == True %}
+        <h3>Пользователь с таким именем уже существует</h3>
+    {% endif %}
+</form>
+</body>
+</html>

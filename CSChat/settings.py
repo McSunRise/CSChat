@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "Chat"
+    "chat"
 ]
 
 MIDDLEWARE = [
@@ -90,7 +90,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = "Chat.User"
+AUTH_USER_MODEL = "chat.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {

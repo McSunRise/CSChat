@@ -5,6 +5,15 @@
     <title>Homepage</title>
 </head>
 <body>
-
+<form method="get">
+    {% csrf_token %}
+    {% if user.is_authenticated == False %}
+        <a href="/reg">Регистрация</a>
+        <a href="/login">Вход</a>
+    {% else %}
+        <a href="/logout">Выйти из аккаунта</a>
+        <div class="username">Welcome, {{ user.get_username }}!</div>
+    {% endif %}
+</form>
 </body>
 </html>

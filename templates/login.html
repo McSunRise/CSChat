@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login page</title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    <ul>
+        <li><input required type="text" name="username" placeholder="Имя пользователя"></li>
+        <li><input required type="password" name="password" placeholder="Пароль"></li>
+        <li><button type="submit">Авторизироваться</button></li>
+    </ul>
+    {% if valid_data == False %}
+        <h3>Неправильно введены логин или пароль</h3>
+    {% endif %}
+</form>
+</body>
+</html>
