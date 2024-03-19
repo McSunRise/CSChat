@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 import django.db.utils
-from Chat.forms import *
+from .forms import *
 
 
 def home(request):
