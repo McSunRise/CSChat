@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
+
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-wg&4@+g234mn!!2rg)0b-0hlz#m4ac=_y4w7ukp9t4un_m!vb_"
+SECRET_KEY = "django-insecure-wg&4@+g234mn!!2rg)0b-0hlz#m4ac=_y4w7ukp9t4un_m!vb_"  # TODO: Желательно бы это ещё в .env перенести
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True  # TODO: Желательно бы это ещё в .env перенести
 
 ALLOWED_HOSTS = []
 
@@ -87,11 +92,11 @@ WSGI_APPLICATION = "CSChat.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "CSChat",
-        "USER": "postgres",
-        "PASSWORD": "endervither31",
-        "HOST": "localhost",
-        "PORT": 5432,
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PORT": os.environ.get("DB_PORT"),
     }
 }
 
