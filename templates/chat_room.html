@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Чат</title>
+</head>
+<body>
+     <style>
+        .message {
+            margin-bottom: 5px;
+        }
+    </style>
+
+    <h1>Чат</h1>
+    <div id="chat-log"></div>
+    <input type="text" id="message-input" />
+    <button onclick="sendMessage()">Отправить</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var roomName = "{{ room_name }}";
+        var socket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
+
+        socket.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            var message = data['message'];
+            $('#chat-log').append('<div class="message">' + message + '</div>');
+        };
+
+        function sendMessage() {
+            var messageInput = $('#message-input');
+            var message = messageInput.val();
+            socket.send(JSON.stringify({'message': message}));
+            messageInput.val('');
+        }
+    </script>
+</body>
+</html>
