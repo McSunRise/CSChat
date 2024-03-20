@@ -33,7 +33,7 @@ class RegForm(ModelForm):
 class LogForm(Form):
 
     username = CharField(
-        widget=TextInput(attrs={'class': 'form-input', 'placeholder': 'Username'}),
+        widget=TextInput(attrs={'class': 'form-input'}),
     )
     password = CharField(
         widget=PasswordInput(attrs={'class': 'form-input'}),
