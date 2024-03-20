@@ -35,7 +35,7 @@ def login_page(request):
             user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is None:
                 form.add_error('password', 'Неправильно введён логин или пароль')
-                return render(request, 'reg.html', context={'form': form})
+                return render(request, 'login.html', context={'form': form})
             login(request, user)
         return redirect("/", permanent=True)
 
@@ -43,6 +43,25 @@ def login_page(request):
 def logout_page(request):
     logout(request)
     return redirect("/", permanent=True)
+
+
+def pass_restore(request):
+    if request.method == "GET":
+        return render(request, 'restore.html', context={'form': PassRestoreForm})
+    else:
+        form = PassRestoreForm(request.POST)
+        if form.is_valid():
+            try:
+                user = User.objects.get(username__exact=form.cleaned_data['username'])
+            except User.DoesNotExist:
+                form.add_error('username', 'Пользователя не существует')
+                return render(request, 'restore.html', context={'form': form})
+            if user.check_password(form.cleaned_data['new_password']):
+                form.add_error('new_password', 'Новый пароль не может совпадать со старым')
+                return render(request, 'restore.html', context={'form': form})
+            user.set_password(form.cleaned_data['new_password'])
+            user.save()
+        return redirect("/", permanent=True)
 
 
 def room(request, room_name):
