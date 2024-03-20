@@ -3,13 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Login page</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/log.css">
 </head>
 <body>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Авторизироваться</button>
-    {{ form.errors }}
-</form>
+
+<div class="container">
+    <div class="card">
+        <div class="tab-background"></div>
+        
+        <div class="tab-content">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="lucide lucide-log-in">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                <polyline points="10 17 15 12 10 7"/>
+                <line x1="15" x2="3" y1="12" y2="12"/>
+            </svg>
+
+            <h2 class="tab-label">Login</h2>
+        </div>
+
+        <div class="form-container">
+            <form id="login-form" method="post" class="form">
+                {% csrf_token %}
+                <div class="fields-container">
+                    <div class="field">
+                        <label for="username">Имя пользователя</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="field">
+                        <label for="password">Пароль</label>
+                        {{ form.password }}
+                    </div>
+                </div>
+                {{ form.errors }}
+            </form>
+        </div>
+        <div class="btn-container">
+                <button type="submit" form="login-form" class="form-btn">Авторизироваться</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

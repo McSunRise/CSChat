@@ -1,0 +1,68 @@
+body {
+    background: gray;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.card {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+}
+
+.tab-content {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+}
+
+.tab-background {
+    z-index: -1;
+    position: absolute;
+    width: 50%;
+    height: 52px;
+    background: #fdfdfd;
+    transform: perspective(5px) rotateX(1deg) translateZ(-1px);
+    border-radius: 6px 6px 0 0;
+    -webkit-transform-origin: 0 0;
+    box-shadow: 15px -15px 30px rgba(0,0,0,0.32);
+}
+
+.form-container {
+    padding: 12px;
+    height: 300px;
+    background: #fdfdfd;
+    border-radius: 0 6px 0 0;
+
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.form-btn{
+    height: 48px;
+    background-color: darkred;
+    width: 100%;
+    border-radius: 0 0 6px 6px;
+    color: white;
+    border: none;
+}
