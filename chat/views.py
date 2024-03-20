@@ -15,17 +15,14 @@ def reg(request):
         form = RegForm(request.POST)
         if form.is_valid():
             if form.pass_check():
-                try:
-                    user = form.save()
-                    user.set_password(form.cleaned_data['password1'])
-                    user.save()
-                except django.db.utils.IntegrityError:
-                    form.add_error('username', 'Пользователь с таким именем уже существует')
-                    return render(request, "reg.html", context={'form': form})
+                user = form.save()
+                user.set_password(form.cleaned_data['password1'])
+                user.save()
             else:
                 form.add_error('password1', 'Пароли не совпадают')
+                return render(request, "reg.html", context={'form': form})
         else:
-            form.add_error(None, 'Форма не заполнена')
+            return render(request, "reg.html", context={'form': form})
     return redirect('/', permanent=True)
 
 

@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-wg&4@+g234mn!!2rg)0b-0hlz#m4ac=_y4w7ukp9t4un_m!vb_"  # TODO: Желательно бы это ещё в .env перенести
+SECRET_KEY = os.environ.get('SECRET_KEY')  # TODO: Желательно бы это ещё в .env перенести
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # TODO: Желательно бы это ещё в .env перенести
+DEBUG = os.environ.get('DEBUG')  # TODO: Желательно бы это ещё в .env перенести
 
 ALLOWED_HOSTS = []
 
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "chat",
-    "channels"
+    "channels",
 ]
 
 ASGI_APPLICATION = 'CSChat.asgi.application'
