@@ -5,6 +5,9 @@
     <title>Чат</title>
 </head>
 <body>
+    {% if not request.user.is_authenticated %}
+
+    {% endif %}
      <style>
         .message {
             margin-bottom: 5px;
@@ -24,13 +27,14 @@
         socket.onmessage = function (e) {
             var data = JSON.parse(e.data);
             var message = data['message'];
-            $('#chat-log').append('<div class="message">' + message + '</div>');
+            var username = data['username'];
+            $('#chat-log').append('<div class="message">' + username + ' ' + message + '</div>');
         };
 
         function sendMessage() {
             var messageInput = $('#message-input');
             var message = messageInput.val();
-            socket.send(JSON.stringify({'message': message}));
+            socket.send(JSON.stringify({'username': "{{ request.user.username }}", 'message': message}));
             messageInput.val('');
         }
     </script>
