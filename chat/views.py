@@ -28,14 +28,14 @@ def reg(request):
 
 def login_page(request):
     if request.method == "GET":
-        return render(request, "login.html", context={'form': LogForm})
+        return render(request, "login.html", context={'form': LogForm, 'feedback_form': FeedbackForm})
     else:
         form = LogForm(request.POST)
         if form.is_valid():
             user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is None:
                 form.add_error('password', 'Неправильно введён логин или пароль')
-                return render(request, 'login.html', context={'form': form})
+                return render(request, 'login.html', context={'form': form, 'feedback_form': FeedbackForm})
             login(request, user)
         return redirect("/", permanent=True)
 

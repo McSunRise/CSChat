@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 
 username_validator = UnicodeUsernameValidator()
+
+
 class User(AbstractUser):
 
     username = models.CharField(
@@ -12,6 +14,7 @@ class User(AbstractUser):
         validators=[username_validator],
         error_messages={'unique': 'A user with that username already exists.'}
     )
+
     def create_user(self, username, email, password):
         self.username = username
         self.set_password(password)

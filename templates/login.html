@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Login page</title>
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/log.css">
+    <link rel="stylesheet" href="../static/css/common.css">
+    <link rel="stylesheet" href="../static/css/log.css">
 </head>
 <body>
 
@@ -40,6 +40,14 @@
                     </div>
                 </div>
                 {{ form.errors }}
+            </form>
+        </div>
+        <div class="feedback-form">
+            <form method="post" name="feedback">
+                {% csrf_token %}
+                {{ feedback_form.email }}
+                {{ feedback_form.feedback }}
+                <button type="submit">Отправить</button>
             </form>
         </div>
         <div class="btn-container">
