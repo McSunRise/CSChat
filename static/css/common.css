@@ -1,40 +1,7 @@
-@font-face {
-    font-family: 'Quicksand';
-    src: url('static/fonts/Quicksand-Light.ttf');
-    font-weight: 300;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Quicksand';
-    src: url('static/fonts/Quicksand-Regular.ttf');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Quicksand';
-    src: url('static/fonts/Quicksand-Medium.ttf');
-    font-weight: 500;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Quicksand';
-    src: url('static/fonts/Quicksand-SemiBold.ttf');
-    font-weight: 600;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Quicksand';
-    src: url('static/fonts/Quicksand-Bold.ttf');
-    font-weight: 700;
-    font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap');
 
 html {
-    font-family: 'Quicksand', sans-serif;
+    font-family: "Hanken Grotesk", sans-serif;
 }
 
 * {
