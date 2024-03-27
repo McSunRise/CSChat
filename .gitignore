@@ -1,4 +1,6 @@
 /__pycache__
+/chat/__pycache__
+/CSChat/__pycache__
 **.idea/
 
 /venv
