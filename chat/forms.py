@@ -5,12 +5,12 @@ from .models import User
 class RegForm(ModelForm):
 
     password1 = CharField(
-        widget=PasswordInput(attrs={'class': 'form-input', 'placeholder': 'Password1'}),
+        widget=PasswordInput(attrs={'class': 'form-input'}),
         min_length=8,
         max_length=32
     )
     password2 = CharField(
-        widget=PasswordInput(attrs={'class': 'form-input', 'placeholder': 'Password2'}),
+        widget=PasswordInput(attrs={'class': 'form-input'}),
         min_length=8,
         max_length=32
     )
@@ -19,8 +19,8 @@ class RegForm(ModelForm):
         model = User
         fields = ['username', 'email']
         widgets = {
-            'username': TextInput(attrs={'class': 'form-input', 'placeholder': 'Username'}),
-            'email': EmailInput(attrs={'class': 'form-input', 'placeholder': 'Email'}),
+            'username': TextInput(attrs={'class': 'form-input'}),
+            'email': EmailInput(attrs={'class': 'form-input'}),
         }
 
     def pass_check(self):

@@ -103,12 +103,12 @@ body {
     cursor: pointer;
     border-radius: 0 0 6px 6px;
     text-transform: uppercase;
+    transition: background-color 0.3s ease-in-out;
 
 }
 .form-btn:hover{
     background-color: #a63957;
     border: 1px #bc3f61 solid;
-    transition: background-color 0.3s ease-in-out;
 
 }
 .form-input{
@@ -228,12 +228,12 @@ body {
     color:white;
 }
 .reg-btn{
+    display: block;
     border: #df405a 1px solid;
     background-color: #df405a;
     color: #fff;
     width: 100%;
     padding: 0 15px;
-    font-family: 'Quicksand', sans-serif;
     font-weight: 700;
     letter-spacing: -1px;
     font-size: 16px;
@@ -242,6 +242,8 @@ body {
     border-radius: 16px;
     transition: all 0.3s;
     margin-top: 16px;
+    text-decoration: none;
+    text-align: center;
 }
 .reg-btn:hover {
     background-color: #87314e;
