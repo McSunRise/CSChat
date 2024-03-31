@@ -38,3 +38,24 @@ class LogForm(Form):
     password = CharField(
         widget=PasswordInput(attrs={'class': 'form-input'}),
     )
+
+
+class PassRestoreForm(Form):
+
+    username = CharField(
+        widget=TextInput(attrs={'class': 'form-input', 'placeholder': 'Username'})
+    )
+    new_password = CharField(
+        widget=PasswordInput(attrs={'class': 'form-input', 'placeholder': 'New password'})
+    )
+
+
+class FeedbackForm(Form):
+
+    email = CharField(
+        widget=EmailInput(attrs={'class': 'form-input', 'placeholder': 'E-mail для обратной связи'})
+    )
+
+    feedback = CharField(
+        widget=TextInput(attrs={'class': 'form-input'})
+    )
