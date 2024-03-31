@@ -5,9 +5,6 @@
     <title>Чат</title>
 </head>
 <body>
-    {% if not request.user.is_authenticated %}
-
-    {% endif %}
      <style>
         .message {
             margin-bottom: 5px;
@@ -21,20 +18,19 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        var roomName = "{{ room_name }}";
-        var socket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
+        const roomName = "{{ room_name }}";
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
 
         socket.onmessage = function (e) {
-            var data = JSON.parse(e.data);
-            var message = data['message'];
-            var username = data['username'];
-            $('#chat-log').append('<div class="message">' + username + ' ' + message + '</div>');
+            const data = JSON.parse(e.data);
+            const message = data['message'];
+            $('#chat-log').append('<div class="message">' + message + '</div>');
         };
 
         function sendMessage() {
-            var messageInput = $('#message-input');
-            var message = messageInput.val();
-            socket.send(JSON.stringify({'username': "{{ request.user.username }}", 'message': message}));
+            const messageInput = $('#message-input');
+            const message = messageInput.val();
+            socket.send(JSON.stringify({'message': message}));
             messageInput.val('');
         }
     </script>

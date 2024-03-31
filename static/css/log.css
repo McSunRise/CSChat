@@ -4,6 +4,7 @@ body {
 
 .container {
     display: flex;
+    flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -53,6 +54,12 @@ body {
     cursor: pointer;
     border: none;
     float: right;
+    transition: opacity 0.3s ease;
+}
+
+.etc-btn.hidden {
+    opacity: 0;
+    cursor: default;
 }
 
 .form-container {
@@ -115,7 +122,14 @@ body {
     font-size: 16px;
     font-weight: 400;
     float: left;
+    border:0;
+    outline:0;
     box-shadow: inset 1px 1px 0px rgba(0,0,0,0.05), 1px 1px 0px rgba(255,255,255,1);
+}
+
+.form-input:focus{
+    background-color: #FFFFE0;
+
 }
 .field label{
     width: 100%;
@@ -125,4 +139,111 @@ body {
     text-align: left;
     line-height: 1.5;
     text-transform: uppercase;
+}
+.content-box{
+    transform: translateX(64px);
+    position: absolute;
+    width: 100%;
+    max-width: 260px;
+    padding: 15px 15px 15px 30px;
+    background-color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    box-shadow: 15px 30px 30px rgba(0,0,0,0.32);
+    box-sizing: border-box;
+}
+
+.container.opened > .card {
+    transform: translateX(-150px);
+}
+
+.container.opened > .content-box {
+    transform: translateX(150px);
+}
+
+.content-box, .card {
+    transition: transform 0.3s ease;
+}
+
+.help-head{
+    display: flex;
+
+}
+.help-head p{
+    color: #032942;
+    font-size: 16px;
+    letter-spacing: -1px;
+    line-height: 20px;
+    width: 100%;
+    text-align: right;
+}
+.close-btn {
+    border: none;
+    height: 24px;
+    line-height: 24px;
+    background-color: transparent;
+    cursor: pointer;
+    opacity: 0.5;
+    float: left;
+}
+
+.forget-btn{
+    border: #87314e 1px solid;
+    background-color: transparent;
+    color: #87314e;
+    margin: 16px 0;
+    width: 100%;
+    padding: 0 15px;
+    border-radius: 16px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    letter-spacing: -1px;
+    font-size: 16px;
+    line-height: 32px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.forget-btn:hover{
+    background-color: #87314e;
+    color:white;
+}
+.help-btn{
+    border: #87314e 1px solid;
+    background-color: transparent;
+    color: #87314e;
+    margin: 16px 0;
+    width: 100%;
+    padding: 0 15px;
+    border-radius: 16px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    letter-spacing: -1px;
+    font-size: 16px;
+    line-height: 32px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.help-btn:hover{
+    background-color: #87314e;
+    color:white;
+}
+.reg-btn{
+    border: #df405a 1px solid;
+    background-color: #df405a;
+    color: #fff;
+    width: 100%;
+    padding: 0 15px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    letter-spacing: -1px;
+    font-size: 16px;
+    line-height: 32px;
+    cursor: pointer;
+    border-radius: 16px;
+    transition: all 0.3s;
+    margin-top: 16px;
+}
+.reg-btn:hover {
+    background-color: #87314e;
+    border: #87314e 1px solid;
 }
