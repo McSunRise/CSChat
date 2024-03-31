@@ -45,6 +45,13 @@
         <div class="btn-container">
                 <button type="submit" form="login-form" class="form-btn">Начать</button>
         </div>
+        <div class="feedback-form">
+            <form method="post">
+                {{ feedback_form.email }}
+                {{ feedback_form.feedback }}
+            </form>
+            <button type="submit">Отправить</button>
+        </div>
         
     </div>
     <div class="content-box">
