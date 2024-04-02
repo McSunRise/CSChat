@@ -1,4 +1,4 @@
-from django.forms import TextInput, ModelForm, CharField, PasswordInput, Form, EmailInput
+from django.forms import TextInput, ModelForm, CharField, PasswordInput, Form, EmailInput, Textarea
 from .models import User
 
 
@@ -43,7 +43,7 @@ class LogForm(Form):
 class PassRestoreForm(Form):
 
     username = CharField(
-        widget=TextInput(attrs={'class': 'form-input', 'placeholder': 'Username'})
+        widget=TextInput(attrs={'class': 'form-input'})
     )
     new_password = CharField(
         widget=PasswordInput(attrs={'class': 'form-input', 'placeholder': 'New password'})
@@ -53,9 +53,9 @@ class PassRestoreForm(Form):
 class FeedbackForm(Form):
 
     email = CharField(
-        widget=EmailInput(attrs={'class': 'form-input', 'placeholder': 'E-mail для обратной связи'})
+        widget=EmailInput(attrs={'class': 'form-input'})
     )
 
     feedback = CharField(
-        widget=TextInput(attrs={'class': 'form-input'})
+        widget=Textarea(attrs={'class': 'text-area'})
     )

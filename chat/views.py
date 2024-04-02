@@ -10,9 +10,10 @@ def home(request):
 
 def reg(request):
     if request.method == "GET":
-        return render(request, "reg.html", context={'form': RegForm})
+        return render(request, "reg.html", context={'form': RegForm, 'feedback_form': FeedbackForm})
     else:
         form = RegForm(request.POST)
+        feedback_form = FeedbackForm(request.POST)
         if form.is_valid():
             if form.pass_check():
                 user = form.save()
@@ -23,6 +24,9 @@ def reg(request):
                 return render(request, "reg.html", context={'form': form})
         else:
             return render(request, "reg.html", context={'form': form})
+        if feedback_form.is_valid():
+            pass
+            return render(request, "reg.html", context={'form': form, 'feedback_form': FeedbackForm})
     return redirect('/', permanent=True)
 
 
