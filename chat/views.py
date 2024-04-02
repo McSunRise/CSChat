@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-import django.db.utils
 from .forms import *
 
 
@@ -21,11 +20,11 @@ def reg(request):
                 user.save()
             else:
                 form.add_error('password1', 'Пароли не совпадают')
-                return render(request, "reg.html", context={'form': form})
+                return render(request, "reg.html", context={'form': form, 'feedback_form': FeedbackForm})
         else:
-            return render(request, "reg.html", context={'form': form})
+            return render(request, "reg.html", context={'form': form, 'feedback_form': FeedbackForm})
         if feedback_form.is_valid():
-            pass
+            pass  # TODO: Логика отправки фидбека
             return render(request, "reg.html", context={'form': form, 'feedback_form': FeedbackForm})
     return redirect('/', permanent=True)
 
@@ -35,12 +34,16 @@ def login_page(request):
         return render(request, "login.html", context={'form': LogForm, 'feedback_form': FeedbackForm})
     else:
         form = LogForm(request.POST)
+        feedback_form = FeedbackForm(request.POST)
         if form.is_valid():
             user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is None:
                 form.add_error('password', 'Неправильно введён логин или пароль')
                 return render(request, 'login.html', context={'form': form, 'feedback_form': FeedbackForm})
             login(request, user)
+        if feedback_form.is_valid():
+            pass  # TODO: Логика отправки фидбека
+            return render(request, 'login.html', context={'form': form, 'feedback_form': FeedbackForm})
         return redirect("/", permanent=True)
 
 
