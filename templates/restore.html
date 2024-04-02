@@ -1,24 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>Password restore</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/restore.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ui.css' %}">
 </head>
 <body>
-<form method="post" id="password_restore" class="form">
-    {% csrf_token %}
-    {{ form.username }}
-    {{ form.new_password }}
-    {% for field in form %}
-        {% if field.errors %}
-            <ul class="errorlist">
-            {% for error in field.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endfor %}
-    <button type="submit">Сменить пароль</button>
-</form>
+
+<div class="container">
+    <div class="card">
+        <div class="tab-background"></div>
+        <div class="tab-content">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="lucide lucide-lock-keyhole" color="#87314e">
+                <circle cx="12" cy="16" r="1"/>
+                <rect x="3" y="10" width="18" height="12" rx="2"/>
+                <path d="M7 10V7a5 5 0 0 1 10 0v3"/>
+            </svg>
+
+            <h2 class="tab-label">Restore pass</h2>
+        </div>
+
+
+        <div class="form-container">
+            <div class="back-btn-div">
+                <a class="back-btn" href="/login/">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="lucide lucide-chevron-left">
+                        <path d="m15 18-6-6 6-6"/>
+                    </svg>
+                </a>
+            </div>
+
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 60 60">
+                <path d="M55,4V43H4a3,3,0,0,1-3-3V4A3.039,3.039,0,0,1,4,1H52A3.037,3.037,0,0,1,55,4Z" fill="#d3e2ef"
+                      style="fill: rgb(219, 230, 240);"></path>
+                <path d="M30.35,22,55,43H4a2.975,2.975,0,0,1-2.05-.81L25.65,22Z" fill="#c4d3e0"
+                      style="fill: rgb(216, 228, 238);"></path>
+                <path d="M54.05,1.81,30.07,22.24a3.207,3.207,0,0,1-4.14,0L1.95,1.81A2.975,2.975,0,0,1,4,1H52A2.975,2.975,0,0,1,54.05,1.81Z"
+                      fill="#ebf5ff"></path>
+                <circle cx="42" cy="42" r="17" fill="#4580c6" style="fill: rgb(166, 57, 87);"></circle>
+                <rect x="38" y="40" width="8" height="8" rx="2" fill="#e6a355"
+                      style="fill: rgb(212, 196, 200);"></rect>
+                <path d="M56,4a4,4,0,0,0-4-4H4A4,4,0,0,0,0,4V40a4,4,0,0,0,4,4H24.118a18,18,0,0,0,34.729,4.354,1,1,0,1,0-1.871-.708A16.012,16.012,0,1,1,58,42a1,1,0,0,0,2,0,17.9,17.9,0,0,0-4-11.288ZM52,2a1.967,1.967,0,0,1,.255.026L29.424,21.478a2.221,2.221,0,0,1-2.846,0L3.745,2.026A1.967,1.967,0,0,1,4,2ZM2.139,40.717A1.968,1.968,0,0,1,2,40V4a1.993,1.993,0,0,1,.138-.717L24.108,22ZM24,42H4a1.967,1.967,0,0,1-.255-.026L25.683,23.285a4.091,4.091,0,0,0,4.633,0l3.291,2.8A18.012,18.012,0,0,0,24,42ZM42,24a17.881,17.881,0,0,0-6.37,1.186L31.892,22,53.861,3.283A1.972,1.972,0,0,1,54,4V28.622A17.908,17.908,0,0,0,42,24Z"
+                      fill="#373737" style="fill: rgb(71, 71, 71);"></path>
+                <path d="M33.617,47.454a1,1,0,1,0-1.676,1.092,12.007,12.007,0,1,0-1.862-7.881l-.372-.372a1,1,0,0,0-1.414,1.414l2,2a1,1,0,0,0,1.414,0l2-2a1,1,0,0,0-1.414-1.414l-.161.161a9.979,9.979,0,1,1,1.485,7Z"
+                      fill="#373737" style="fill: rgb(71, 71, 71);"></path>
+                <path d="M42,35a3,3,0,0,0-3,3v1.184A3,3,0,0,0,37,42v4a3,3,0,0,0,3,3h4a3,3,0,0,0,3-3V42a3,3,0,0,0-2-2.816V38A3,3,0,0,0,42,35Zm0,2a1,1,0,0,1,1,1v1H41V38A1,1,0,0,1,42,37Zm3,9a1,1,0,0,1-1,1H40a1,1,0,0,1-1-1V42a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1Z"
+                      fill="#373737" style="fill: rgb(71, 71, 71);"></path>
+            </svg>
+
+            <div class="text">
+                <p>
+                    Впишите почту, на которую привязан ваш аккаунт
+                </p>
+            </div>
+
+
+            <form method="post" id="password_restore" class="form">
+                <div class="fields-container">
+                    {% csrf_token %}
+                    <div class="field">
+                        <label for="email">Почта</label>
+                        {{ form.username }}
+                    </div>
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endfor %}
+                    <button type="submit" class="button button__primary submit-button">Продолжить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
 </body>
 </html>
