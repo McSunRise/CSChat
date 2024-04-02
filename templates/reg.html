@@ -76,7 +76,7 @@
 
         <div class="form-container">
             <button class="etc-btn"></button>
-            <form method="post" class="form">
+            <form method="post" id="reg-form" class="form">
                 <div class="fields-container">
                     {% csrf_token %}
 
@@ -113,7 +113,7 @@
             </form>
         </div>
         <div class="btn-container">
-            <button type="submit" class="form-btn">Зарегистрироваться</button>
+            <button type="submit" form="reg-form" class="form-btn">Зарегистрироваться</button>
         </div>
 
     </div>
