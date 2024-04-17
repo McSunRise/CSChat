@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import *
+from django.contrib import messages
 
 
 def home(request):
@@ -38,7 +39,7 @@ def login_page(request):
         if form.is_valid():
             user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is None:
-                form.add_error('password', 'Неправильно введён логин или пароль')
+                messages.error(request,'Неправильное имя пользователя или пароль', )
                 return render(request, 'login.html', context={'form': form, 'feedback_form': FeedbackForm})
             login(request, user)
         if feedback_form.is_valid():

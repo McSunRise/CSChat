@@ -12,54 +12,58 @@
 
 <div class="container">
     <div id="buttons" class="content-box">
-            <div class="help-head">
-                <button class="close-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                         class="lucide lucide-x">
-                        <path d="M18 6 6 18"/>
-                        <path d="m6 6 12 12"/>
-                    </svg>
-                </button>
-                <p>Нужна помощь?</p>
+        <div class="help-head">
+            <button class="close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                     class="lucide lucide-x">
+                    <path d="M18 6 6 18"/>
+                    <path d="m6 6 12 12"/>
+                </svg>
+            </button>
+            <p>Нужна помощь?</p>
+        </div>
+
+        <hr>
+
+        <button class="secondary-button">
+            Контактная помощь
+        </button>
+
+        <a href="/password_restore/" class="secondary-button">
+            Забыли пароль?
+        </a>
+
+        <hr>
+
+        <a href="/reg/" class="reg-btn">
+            Регистрация
+        </a>
+    </div>
+    <div id="feedback-form" class="content-box hidden">
+
+        <button class="back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="lucide lucide-chevron-left">
+                <path d="m15 18-6-6 6-6"/>
+            </svg>
+        </button>
+
+        <form method="post" class="feedback-fields-cnt">
+            {% csrf_token %}
+            <div class="feedback-field">
+                <label for="email">Почта</label>
+                {{ feedback_form.email }}
             </div>
+            <div class="feedback-field">
+                <label for="feedback">Ваше обращение</label>
+                {{ feedback_form.feedback }}
+            </div>
+            <button type="submit" class="field-btn">Отправить</button>
+        </form>
 
-            <hr>
-
-            <button class="secondary-button">
-                Контактная помощь
-            </button>
-
-            <a href="/password_restore/" class="secondary-button">
-                Забыли пароль?
-            </a>
-
-            <hr>
-
-            <a href="/reg/" class="reg-btn">
-                Регистрация
-            </a>
-        </div>
-        <div id="feedback-form" class="content-box hidden">
-            
-            <button class="back-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
-            </button>
-            
-            <form method="post" class="feedback-fields-cnt">
-                {% csrf_token %}
-                <div class="feedback-field">
-                    <label for="email">Почта</label>
-                    {{ feedback_form.email }}
-                </div>
-                <div class="feedback-field">
-                    <label for="feedback">Ваше обращение</label>
-                    {{ feedback_form.feedback }}
-                </div>
-                <button type="submit" class="field-btn">Отправить</button>
-            </form>
-            
-        </div>
+    </div>
 
 
     <div class="card">
@@ -88,12 +92,16 @@
                         <label for="username">Имя пользователя</label>
                         {{ form.username }}
                     </div>
+                    <div class="error">
+                        {{ form.errors }}
+                    </div>
                     <div class="field">
                         <label for="password">Пароль</label>
                         {{ form.password }}
                     </div>
                 </div>
-                {{ form.errors }}
+
+
             </form>
         </div>
         <div class="btn-container">

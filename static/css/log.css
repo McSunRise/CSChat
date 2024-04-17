@@ -283,7 +283,7 @@ body {
     border:none;
     background-color: rgba(0,0,0,0.03);
     width: 100%;
-    padding: 0 10px;
+    padding: 5px 10px;
     display: inline;
     color: #303030;
     font-size: 16px;
@@ -295,4 +295,10 @@ body {
 }
 .text-area:focus{
     background-color: #FFFFE0;
+}
+
+.error:after {
+    content: "Неправильное имя пользователя или пароль.";
+    color: red;
+    font-size: 14px;
 }
