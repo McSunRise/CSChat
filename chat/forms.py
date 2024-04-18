@@ -1,5 +1,5 @@
 from django.forms import TextInput, ModelForm, CharField, PasswordInput, Form, EmailInput
-from .models import User
+from .models import User, Message
 
 
 class RegForm(ModelForm):
@@ -59,3 +59,10 @@ class FeedbackForm(Form):
     feedback = CharField(
         widget=TextInput(attrs={'class': 'form-input'})
     )
+
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = ['message']
+        labels = {'message': ""}

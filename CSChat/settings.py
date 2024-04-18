@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "daphne",
     "django.contrib.staticfiles",
-    "chat",
     "channels",
+    "chat",
 ]
 
 ASGI_APPLICATION = 'CSChat.asgi.application'

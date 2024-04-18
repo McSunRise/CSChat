@@ -10,8 +10,15 @@
             margin-bottom: 5px;
         }
     </style>
-
+    {% if user.is_authenticated %}
     <h1>Чат</h1>
+        <table id="chat">
+        {% for message in message_list %}
+            <tr>
+                <td>{{ message.author }} {{ message.message }} {{ message.pub_date }}</td>
+            </tr>
+        {% endfor %}
+        </table>
     <div id="chat-log"></div>
     <input type="text" id="message-input" />
     <button onclick="sendMessage()">Отправить</button>
@@ -20,19 +27,22 @@
     <script>
         const roomName = "{{ room_name }}";
         const socket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
-
         socket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             const message = data['message'];
-            $('#chat-log').append('<div class="message">' + message + '</div>');
+            const sender = data['sender']
+            const currentDate = new Date();
+            $('#chat-log').append('<div class="full_message">' + sender + ' ' + message + ' ' + currentDate + '</div>');
         };
 
         function sendMessage() {
             const messageInput = $('#message-input');
             const message = messageInput.val();
-            socket.send(JSON.stringify({'message': message}));
+            const receiver = roomName
+            socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': receiver}));
             messageInput.val('');
         }
     </script>
+    {% endif %}
 </body>
 </html>
