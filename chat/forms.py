@@ -59,3 +59,10 @@ class FeedbackForm(Form):
     feedback = CharField(
         widget=Textarea(attrs={'class': 'text-area'})
     )
+
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = ['message']
+        labels = {'message': ""}
