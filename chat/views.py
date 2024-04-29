@@ -1,6 +1,9 @@
-from django.shortcuts import render, redirect
+from django.db.models import Count
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from .forms import *
+from .models import Chat
+from django.views import View
 
 
 def home(request):
@@ -72,4 +75,4 @@ def pass_restore(request):
 
 
 def room(request, room_name):
-    return render(request, 'chat_room.html', {'room_name': room_name})
+    return render(request, 'chat_room.html', context={'room_name': room_name, 'message_list': Message.objects.filter(chat=room_name)})
