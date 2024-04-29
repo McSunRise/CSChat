@@ -1,9 +1,7 @@
-from django.db.models import Count
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import *
-from .models import Chat
-from django.views import View
+from .models import Message
 
 
 def home(request):
