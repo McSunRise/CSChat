@@ -21,10 +21,11 @@ from chat import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", views.home, name='home'),
-    path("reg/", views.reg, name='registration'),
-    path("login/", views.login_page, name='login'),
+    path("", login_required(views.home), name='home'),
+    path("auth/reg/", views.reg, name='registration'),
+    path("auth/", views.login_page, name='login'),
     path("logout/", views.logout_page, name='logout'),
-    path("password_restore/", views.pass_restore, name='password_restore'),
-    path("chat/<int:room_name>", login_required(views.room), name='room')
+    path("auth/password_restore/", views.pass_restore, name='password_restore'),
+    path("chat/<int:room_name>", login_required(views.room), name='room'),
+    path("chat/create", login_required(views.chat_create), name='create')
 ]

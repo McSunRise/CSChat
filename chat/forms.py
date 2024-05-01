@@ -61,8 +61,7 @@ class FeedbackForm(Form):
     )
 
 
-class MessageForm(ModelForm):
-    class Meta:
-        model = Message
-        fields = ['message']
-        labels = {'message': ""}
+class ChatCreateForm(Form):
+    receiver = CharField(
+        widget=TextInput(attrs={'class': 'form-input'})
+    )

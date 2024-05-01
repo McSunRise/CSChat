@@ -1,11 +1,15 @@
-from django.shortcuts import render, redirect
+import django.db.utils
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from .forms import *
-from django.contrib import messages
+from .models import Message, Chat, User
 
 
 def home(request):
-    return render(request, "home.html")
+    messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user)).order_by(
+        'chat_id', '-pub_date').distinct('chat__id')
+    chats = Chat.objects.filter(members=request.user)
+    return render(request, "home.html", context={'chats': chats, 'messages': messages})
 
 
 def reg(request):
@@ -27,6 +31,10 @@ def reg(request):
         if feedback_form.is_valid():
             pass  # TODO: Логика отправки фидбека
             return render(request, "reg.html", context={'form': form, 'feedback_form': FeedbackForm})
+        first_chat = Chat.objects.create(pk=user.pk)
+        first_chat.save()
+        message = Message.objects.create(chat=user.pk, author=user, receiver=user, message='For testing purposes')
+        message.save()
     return redirect('/', permanent=True)
 
 
@@ -39,7 +47,7 @@ def login_page(request):
         if form.is_valid():
             user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is None:
-                messages.error(request,'Неправильное имя пользователя или пароль', )
+                form.add_error('password', 'Неправильно введён логин или пароль')
                 return render(request, 'login.html', context={'form': form, 'feedback_form': FeedbackForm})
             login(request, user)
         if feedback_form.is_valid():
@@ -72,5 +80,29 @@ def pass_restore(request):
         return redirect("/", permanent=True)
 
 
+def chat_create(request):
+    if request.method == "GET":
+        return render(request, 'chat_create.html', context={'form': ChatCreateForm})
+    else:
+        form = ChatCreateForm(request.POST)
+        if form.is_valid():
+            receiver = User.objects.get(username=form.cleaned_data['receiver'])
+            chat = Chat.objects.create()
+            chat.members.add(request.user, receiver)
+            # TODO: Дописать эту хуергу
+            print(chat.members.values())
+            print(Chat.objects.filter(members=request.user)[0].members.values())
+            print(chat.members.values() != Chat.objects.filter(members=request.user)[0].members.values())
+            if chat.members not in Chat.objects.values('members'):
+                chat.save()
+                first_mes = Message.objects.create(chat=chat, author=request.user, receiver=receiver, message='First message in a new chat. Write something!')
+                first_mes.save()
+        return redirect("/", permanent=True)
+
+
 def room(request, room_name):
-    return render(request, 'chat_room.html', {'room_name': room_name})
+    if request.user.id in Chat.objects.get(pk=room_name).members.all().values_list(flat=True):
+        return render(request, 'chat_room.html',
+                      context={'room_name': room_name, 'message_list': Message.objects.filter(chat=room_name)})
+    else:
+        return redirect("/", permanent=True)
