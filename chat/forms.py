@@ -1,5 +1,5 @@
 from django.forms import TextInput, ModelForm, CharField, PasswordInput, Form, EmailInput, Textarea
-from .models import User
+from .models import User, Message
 
 
 class RegForm(ModelForm):

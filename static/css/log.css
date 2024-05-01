@@ -298,7 +298,6 @@ body {
 }
 
 .error:after {
-    content: "Неправильное имя пользователя или пароль.";
     color: red;
     font-size: 14px;
 }
