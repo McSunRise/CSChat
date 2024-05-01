@@ -106,6 +106,8 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_USER_MODEL = "chat.User"
+LOGIN_URL = "/auth"
+LOGIN_REDIRECT_URL = "/auth"
 
 AUTH_PASSWORD_VALIDATORS = [
     {

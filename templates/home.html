@@ -7,16 +7,17 @@
 <body>
 <form method="get">
     {% csrf_token %}
-    {% if user.is_authenticated == False %}
-        <a href="/reg">Регистрация</a>
-        <a href="/login">Вход</a>
-    {% else %}
-        <a href="/logout">Выход</a>
-        {% if user.is_superuser %}
-            <a href="/admin">Админ панель</a>
-        {% endif %}
-        <p>Welcome, {{ user.username }}!</p>
+    <a href="/logout">Выход</a>
+    {% if user.is_superuser %}
+        <a href="/admin">Админ панель</a>
     {% endif %}
+    <p>Welcome, {{ user.username }}!</p>
+    {% for message in messages %}
+        <div class="chat">
+            <p><a href="/chat/{{ message.chat.pk }}">{% if message.chat.pk == user.id %} Saved messages {% else %} {{ message.receiver }} {% endif %}</a></p>
+            <p>{{ message.message }} {{ message.pub_date }}</p>
+        </div>
+    {% endfor %}
 </form>
 </body>
 </html>

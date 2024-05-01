@@ -1,5 +1,5 @@
 from django.forms import TextInput, ModelForm, CharField, PasswordInput, Form, EmailInput, Textarea
-from .models import User
+from .models import User, Message
 
 
 class RegForm(ModelForm):
@@ -58,4 +58,10 @@ class FeedbackForm(Form):
 
     feedback = CharField(
         widget=Textarea(attrs={'class': 'text-area'})
+    )
+
+
+class ChatCreateForm(Form):
+    receiver = CharField(
+        widget=TextInput(attrs={'class': 'form-input'})
     )
