@@ -38,7 +38,7 @@ body{
 .chat{
     border: 1px solid black;
     border-radius: 3px;
-    box-shadow: 7px 4px 1px rgba(0, 0, 0, 0.9);
+    box-shadow: 6px 4px 1px rgba(0, 0, 0, 0.9);
     margin-top: 16px;
 }
 .text{
