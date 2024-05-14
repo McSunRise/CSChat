@@ -9,9 +9,11 @@
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    const socket = new WebSocket('ws://' + window.location.host + '/ws/chat');
-</script>
+{% if room_name == 0 %}
+    <script>
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/chat');
+    </script>
+{% endif %}
 
 <div class="logo">
     <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="200.000000pt" height="124.000000pt"
