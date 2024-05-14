@@ -7,9 +7,13 @@ from .models import Message, Chat, User
 
 def home(request):
     messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user)).order_by(
-        'chat_id', '-pub_date').distinct('chat__id')
+        'chat__id', '-pub_date').distinct('chat__id')
     chats = Chat.objects.filter(members=request.user)
-    return render(request, "home.html", context={'chats': chats, 'messages': messages})
+    return render(request, "home.html", context={'chats': chats, 'messages': messages, 'room_name': 0})
+
+
+def redir(request):
+    return redirect("/chat", permanent=True)
 
 
 def reg(request):
@@ -95,14 +99,27 @@ def chat_create(request):
             print(chat.members.values() != Chat.objects.filter(members=request.user)[0].members.values())
             if chat.members not in Chat.objects.values('members'):
                 chat.save()
-                first_mes = Message.objects.create(chat=chat, author=request.user, receiver=receiver, message='First message in a new chat. Write something!')
+                first_mes = Message.objects.create(chat=chat,
+                                                   author=request.user,
+                                                   receiver=receiver,
+                                                   message='First message in a new chat. Write something!'
+                                                   )
                 first_mes.save()
         return redirect("/", permanent=True)
 
 
 def room(request, room_name):
+    messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user)).order_by(
+        'chat__id', '-pub_date').distinct('chat__id')
+    chats = Chat.objects.filter(members=request.user)
     if request.user.id in Chat.objects.get(pk=room_name).members.all().values_list(flat=True):
-        return render(request, 'chat_room.html',
-                      context={'room_name': room_name, 'message_list': Message.objects.filter(chat=room_name)})
+        return render(request, 'home.html',
+                      context={'messages': messages,
+                               'chats': chats,
+                               'room_name': room_name,
+                               'message_list': Message.objects.filter(chat=room_name),
+                               'receiver': Message.objects.filter(chat=room_name)[0].receiver_id
+                               }
+                      )
     else:
         return redirect("/", permanent=True)
