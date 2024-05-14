@@ -38,8 +38,7 @@
         function sendMessage() {
             const messageInput = $('#message-input');
             const message = messageInput.val();
-            const receiver = roomName
-            socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': receiver}));
+            socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': {{ receiver }}}));
             messageInput.val('');
         }
     </script>
