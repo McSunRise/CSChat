@@ -1,15 +1,18 @@
-import django.db.utils
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Max
 from .forms import *
 from .models import Message, Chat, User
 
 
 def home(request):
-    messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user)).order_by(
-        'chat_id', '-pub_date').distinct('chat__id')
-    chats = Chat.objects.filter(members=request.user)
-    return render(request, "home.html", context={'chats': chats, 'messages': messages})
+    messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user))\
+        .filter(id__in=Message.objects.values('chat__id').annotate(id=Max('id')).values('id')).order_by('-pub_date')
+    return render(request, "home.html", context={'messages': messages, 'room_name': 0})
+
+
+def redir(request):
+    return redirect("/chat", permanent=True)
 
 
 def reg(request):
@@ -31,9 +34,10 @@ def reg(request):
         if feedback_form.is_valid():
             pass  # TODO: Логика отправки фидбека
             return render(request, "reg.html", context={'form': form, 'feedback_form': FeedbackForm})
-        first_chat = Chat.objects.create(pk=user.pk)
+        first_chat = Chat.objects.create()
+        first_chat.members.add(user)
         first_chat.save()
-        message = Message.objects.create(chat=user.pk, author=user, receiver=user, message='For testing purposes')
+        message = Message.objects.create(chat=first_chat, author=user, receiver=user, message='For testing purposes')
         message.save()
     return redirect('/', permanent=True)
 
@@ -95,14 +99,25 @@ def chat_create(request):
             print(chat.members.values() != Chat.objects.filter(members=request.user)[0].members.values())
             if chat.members not in Chat.objects.values('members'):
                 chat.save()
-                first_mes = Message.objects.create(chat=chat, author=request.user, receiver=receiver, message='First message in a new chat. Write something!')
+                first_mes = Message.objects.create(chat=chat,
+                                                   author=request.user,
+                                                   receiver=receiver,
+                                                   message='First message in a new chat. Write something!'
+                                                   )
                 first_mes.save()
         return redirect("/", permanent=True)
 
 
 def room(request, room_name):
+    messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user)) \
+        .filter(id__in=Message.objects.values('chat__id').annotate(id=Max('id')).values('id')).order_by('-pub_date')
     if request.user.id in Chat.objects.get(pk=room_name).members.all().values_list(flat=True):
-        return render(request, 'chat_room.html',
-                      context={'room_name': room_name, 'message_list': Message.objects.filter(chat=room_name)})
+        return render(request, 'home.html',
+                      context={'messages': messages,
+                               'room_name': room_name,
+                               'message_list': Message.objects.filter(chat=room_name),
+                               'receiver': Message.objects.filter(chat=room_name)[0].receiver_id
+                               }
+                      )
     else:
         return redirect("/", permanent=True)
