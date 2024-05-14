@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/chat');
+</script>
 
 <div class="logo">
     <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="200.000000pt" height="124.000000pt"
@@ -70,7 +74,7 @@
             <a href="/admin">Админ панель</a>
         {% endif %}
     </div>
-    {% if user.is_authenticated %}
+    {% if room_name != 0 %}
 
         <table id="chat">
             {% for message in message_list %}
@@ -88,8 +92,6 @@
                 <button class="send-btn" onclick="sendMessage()">Отправить</button>
             </div>
         </div>
-        
-
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
@@ -106,8 +108,7 @@
             function sendMessage() {
                 const messageInput = $('#message-input');
                 const message = messageInput.val();
-                const receiver = roomName
-                socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': receiver}));
+                socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': {{ receiver }}}));
                 messageInput.val('');
             }
         </script>

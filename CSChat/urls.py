@@ -21,7 +21,8 @@ from chat import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", login_required(views.home), name='home'),
+    path("", views.redir, name='redir'),
+    path("chat/", login_required(views.home), name='home'),
     path("auth/reg/", views.reg, name='registration'),
     path("auth/", views.login_page, name='login'),
     path("logout/", views.logout_page, name='logout'),
