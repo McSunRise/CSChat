@@ -116,7 +116,9 @@ def room(request, room_name):
                       context={'messages': messages,
                                'room_name': room_name,
                                'message_list': Message.objects.filter(chat=room_name),
-                               'receiver': Message.objects.filter(chat=room_name)[0].receiver_id
+                               'receiver': Message.objects.filter(chat=room_name)[0].receiver_id if
+                               Message.objects.filter(chat=room_name)[0].receiver_id != request.user.id else
+                               Message.objects.filter(chat=room_name)[0].author_id
                                }
                       )
     else:

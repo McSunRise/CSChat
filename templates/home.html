@@ -109,8 +109,9 @@
             {% for message in messages %}
                 <div class="chat">
                     <p><a href="/chat/{{ message.chat.pk }}"> {% if message.chat.pk == user.id %} Saved
-                        messages {% else %}
-                        {{ message.receiver }} {% endif %}</a></p>
+                        messages {% elif message.receiver != user %}
+                        {{ message.receiver }} {% else %}
+                        {{ message.author }}{% endif %}</a></p>
                     <p class="text">{{ message.message }} </p>
                     <p>{{ message.pub_date }}</p>
                 </div>
