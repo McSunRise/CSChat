@@ -57,34 +57,6 @@
     </div>
 </header>
 
-{#<div class="actions">#}
-{#    {% csrf_token %}#}
-{#    <div class="choice">#}
-{#        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#aaaaaa"#}
-{#             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out">#}
-{#            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>#}
-{#            <polyline points="16 17 21 12 16 7"/>#}
-{#            <line x1="21" x2="9" y1="12" y2="12"/>#}
-{#        </svg>#}
-{#        <a href="/logout">Выход</a>#}
-{#    </div>#}
-{##}
-{##}
-{#    {% if user.is_superuser %}#}
-{#        <div class="choice">#}
-{#            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"#}
-{#                 stroke="#aaaaaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"#}
-{#                 class="lucide lucide-shield-ellipsis">#}
-{#                <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>#}
-{#                <path d="M8 12h.01"/>#}
-{#                <path d="M12 12h.01"/>#}
-{#                <path d="M16 12h.01"/>#}
-{#            </svg>#}
-{#            <a href="/admin">Админ панель</a>#}
-{#        </div>#}
-{#    {% endif %}#}
-{#</div>#}
-
 <main class="container">
 
     <div class="left-column">
@@ -99,10 +71,43 @@
                     <line x1="3" x2="21" y1="18" y2="18"/>
                 </svg>
             </button>
+
+
             <div class='find-input'>
                 <input class="finder">
             </div>
         </div>
+
+        <div class="actions hidden">
+
+            {% csrf_token %}
+            <a href="/logout" class="choice">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="#aaaaaa"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" x2="9" y1="12" y2="12"/>
+                </svg>
+                <span>Выход</span>
+            </a>
+
+            {% if user.is_superuser %}
+                <a href="/admin" class="choice">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="#aaaaaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="lucide lucide-shield-ellipsis">
+                        <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+                        <path d="M8 12h.01"/>
+                        <path d="M12 12h.01"/>
+                        <path d="M16 12h.01"/>
+                    </svg>
+                    <span>Админ панель</span>
+                </a>
+            {% endif %}
+
+        </div>
+
         <div class="chats">
 
 
@@ -158,21 +163,41 @@
             const data = JSON.parse(e.data);
             const message = data['message'];
             const sender = data['sender']
-            const currentDate = new Date();
-            $('#chat').append(`<div class="messages-letters">
-                        <div class="message-info">${sender} ${currentDate}</div>
-                        <p class="message-body"> ${message} </p>
-                    </div>`);
-        };
+            
+                {#const currentDate = formatAMPM(new Date());#}
+                const currentDate = new Date();
+                let dateOptions = {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                };
+                let timeOptions = {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                };
 
-        function sendMessage() {
-            const messageInput = $('#message-input');
-            const message = messageInput.val();
+                const formattedDate = currentDate.toLocaleString("en-US", dateOptions);
+                const formattedTime = currentDate.toLocaleString("en-US", timeOptions).toLocaleLowerCase();
+                $('#chat').append(`<div class="messages-letters">
+        <div class="message-info">${sender}  <span>${formattedDate}, ${formattedTime}</span> </div>
+        <p class="message-body"> ${message} </p>
+    </div>`);
+                $('.messages-letters').last().hide().fadeIn(800);
+                const messages = document.querySelectorAll('.messages-letters');
+                messages[messages.length - 1].scrollIntoView();
+            }
+            
+            function sendMessage() {
+                const messageInput = $('#message-input');
+                const message = messageInput.val();
 
-            socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': {{ receiver }}}));
-            messageInput.val('');
-        }
+
+                socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': {{ receiver }}}));
+                messageInput.val('');
+            }
     </script>
 {% endif %}
+
+<script type="module" src="{% static 'js/home.js' %}"></script>
 </body>
 </html>
