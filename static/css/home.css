@@ -44,43 +44,68 @@ header {
     gap: 8px;
 }
 .find-input{
-
+    width: 360px;
+    outline-width: 0;
 }
 .finder{
-    width: 230%;
+    width: 100%;
     border-radius: 20px;
-    height: 30px;
+    height: 34px;
+    padding-inline: 12px ;
+    outline-width: 0;
+    border: 1px solid black;
+    font-size: 18px;
 }
 .actions{
-    background-color: rgb(0,0,0,0.3);
-    width: 20%;
+    background-color: rgb(33, 33, 33);
+    border: 1px solid black;
+    width: 240px;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    padding: 10px 8px;
+    border-radius: 10px;
     position: absolute;
+    margin-top: 8px;
+    margin-left: 16px;
 }
+
 .actions.hidden{
-    display: none;
+    visibility: hidden;
 }
 .actions a{
     text-decoration: none;
     color: white;
 }
+
 .choice{
-    margin-left: 8px;
     display: flex;
     gap: 4px;
+    border-radius: 4px;
+    padding: 4px 4px;
+    transition: background-color 0.2s ease;
 }
-.choice{
-    display: flex;
+.choice:hover{
+    background-color: rgba(0 0 0 / 0.2);
 }
+
 .open-btn{
     background-color: transparent;
     border: none;
     cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
 }
+.open-btn.opened{
+    background-color: rgba(0 0 0 / 0.3);
+
+}
+
 .middle-column {
     width: 100%;
     max-height: 100%;
@@ -114,8 +139,10 @@ header {
     word-wrap: anywhere;
 }
 .message-info{
-
+    display: flex;
+    justify-content: space-between;
 }
+
 .chats::-webkit-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
@@ -136,12 +163,9 @@ header {
     border: 1px solid black;
     border-radius: 3px;
     box-shadow: 6px 4px 1px rgba(0, 0, 0, 0.9);
-
     padding: 8px 12px ;
 }
-.chat:active{
 
-}
 .text {
     color: grey;
     text-overflow: ellipsis;
