@@ -140,10 +140,6 @@ def room(request, room_name):
     messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user)) \
         .filter(id__in=Message.objects.values('chat__id').annotate(id=Max('id')).values('id')).order_by('-pub_date')
     if request.user.id in Chat.objects.get(pk=room_name).members.all().values_list(flat=True):
-<<<<<<< HEAD
-        return render_search(request,messages, room_name)
-=======
         return render_search(request, messages, room_name)
->>>>>>> backend-develop
     else:
         return redirect("/", permanent=True)
