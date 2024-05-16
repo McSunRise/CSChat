@@ -75,6 +75,14 @@
 
             <div class='find-input'>
                 <input class="finder">
+                    <form method="post">
+                    {% csrf_token %}
+                    {% for field in search_form %}
+                        {{ field }}
+                    {% endfor %}
+                    {{ form.errors }}
+                    <button type="submit">Создать</button>
+                    </form>
             </div>
         </div>
 
@@ -113,7 +121,7 @@
 
             {% for message in messages %}
                 <div class="chat">
-                    <p><a href="/chat/{{ message.chat.pk }}"> {% if message.chat.pk == user.id %} Saved
+                    <p><a href="/chat/{{ message.chat.pk }}"> {% if message.author == message.receiver %} Saved
                         messages {% elif message.receiver != user %}
                         {{ message.receiver }} {% else %}
                         {{ message.author }}{% endif %}</a></p>

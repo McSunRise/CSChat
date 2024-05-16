@@ -10,6 +10,7 @@
     {% for field in form %}
         {{ field }}
     {% endfor %}
+    {{ form.errors }}
     <button type="submit">Создать</button>
 </form>
 </body>
