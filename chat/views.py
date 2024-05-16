@@ -1,14 +1,61 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
-from django.db.models import Max
+from django.db.models import Max, Count
 from .forms import *
 from .models import Message, Chat, User
 
 
+def render_by_rn(request, messages, room_name, search_form = ChatCreateForm):
+    if room_name != 0:
+        return render(request, "home.html", context={'messages': messages,
+                                                     'room_name': room_name,
+                                                     'search_form': search_form,
+                                                     'message_list': Message.objects.filter(chat=room_name),
+                                                     'receiver': Message.objects.filter(chat=room_name)[0].receiver_id})
+    else:
+        return render(request, "home.html", context={'messages': messages,
+                                                     'room_name': room_name,
+                                                     'search_form': search_form})
+
+
+def chat_create(user, receiver):
+    chat = Chat.objects.create()
+    chat.members.add(user, receiver)
+    chat.save()
+    first_mes = Message.objects.create(chat=chat,
+                                       author=user,
+                                       receiver=receiver,
+                                       message='First message in a new chat. Write something!'
+                                       )
+    first_mes.save()
+
+
+def render_search(request, messages, room_name):
+    if request.method == "GET":
+        return render_by_rn(request, messages, room_name)
+    else:
+        search_form = ChatCreateForm(request.POST)
+        if search_form.is_valid():
+            try:
+                receiver = User.objects.get(username=search_form.cleaned_data['receiver'])
+            except User.DoesNotExist:
+                search_form.add_error('receiver', 'Пользователя не существует')
+                return render_by_rn(request, messages, room_name, search_form)
+            user_chats = Chat.objects.filter(members=request.user.id)
+            receiver_chats = Chat.objects.filter(members=receiver.id)
+            if len(user_chats.intersection(receiver_chats)) == 0:
+                chat_create(request.user, receiver)
+            elif request.user == receiver:
+                return redirect(f"/chat/{[i.id for i in user_chats if i.members.count() == 1][0]}")
+            else:
+                return redirect(f"/chat/{user_chats.intersection(receiver_chats)[0].id}", permanent=True)
+        return redirect("/", permanent=True)
+
+
 def home(request):
-    messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user))\
+    messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user)) \
         .filter(id__in=Message.objects.values('chat__id').annotate(id=Max('id')).values('id')).order_by('-pub_date')
-    return render(request, "home.html", context={'messages': messages, 'room_name': 0})
+    return render_search(request, messages, room_name=0)
 
 
 def redir(request):
@@ -34,11 +81,7 @@ def reg(request):
         if feedback_form.is_valid():
             pass  # TODO: Логика отправки фидбека
             return render(request, "reg.html", context={'form': form, 'feedback_form': FeedbackForm})
-        first_chat = Chat.objects.create()
-        first_chat.members.add(user)
-        first_chat.save()
-        message = Message.objects.create(chat=first_chat, author=user, receiver=user, message='For testing purposes')
-        message.save()
+        chat_create(user, user)
     return redirect('/', permanent=True)
 
 
@@ -84,42 +127,10 @@ def pass_restore(request):
         return redirect("/", permanent=True)
 
 
-def chat_create(request):
-    if request.method == "GET":
-        return render(request, 'chat_create.html', context={'form': ChatCreateForm})
-    else:
-        form = ChatCreateForm(request.POST)
-        if form.is_valid():
-            receiver = User.objects.get(username=form.cleaned_data['receiver'])
-            chat = Chat.objects.create()
-            chat.members.add(request.user, receiver)
-            # TODO: Дописать эту хуергу
-            print(chat.members.values())
-            print(Chat.objects.filter(members=request.user)[0].members.values())
-            print(chat.members.values() != Chat.objects.filter(members=request.user)[0].members.values())
-            if chat.members not in Chat.objects.values('members'):
-                chat.save()
-                first_mes = Message.objects.create(chat=chat,
-                                                   author=request.user,
-                                                   receiver=receiver,
-                                                   message='First message in a new chat. Write something!'
-                                                   )
-                first_mes.save()
-        return redirect("/", permanent=True)
-
-
 def room(request, room_name):
     messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user)) \
         .filter(id__in=Message.objects.values('chat__id').annotate(id=Max('id')).values('id')).order_by('-pub_date')
     if request.user.id in Chat.objects.get(pk=room_name).members.all().values_list(flat=True):
-        return render(request, 'home.html',
-                      context={'messages': messages,
-                               'room_name': room_name,
-                               'message_list': Message.objects.filter(chat=room_name),
-                               'receiver': Message.objects.filter(chat=room_name)[0].receiver_id if
-                               Message.objects.filter(chat=room_name)[0].receiver_id != request.user.id else
-                               Message.objects.filter(chat=room_name)[0].author_id
-                               }
-                      )
+        return render_search(request,messages, room_name)
     else:
         return redirect("/", permanent=True)
