@@ -5,13 +5,22 @@ from .forms import *
 from .models import Message, Chat, User
 
 
-def render_by_rn(request, messages, room_name, search_form = ChatCreateForm):
+def render_by_rn(request, messages, room_name, search_form=ChatCreateForm):
     if room_name != 0:
-        return render(request, "home.html", context={'messages': messages,
-                                                     'room_name': room_name,
-                                                     'search_form': search_form,
-                                                     'message_list': Message.objects.filter(chat=room_name),
-                                                     'receiver': Message.objects.filter(chat=room_name)[0].receiver_id})
+        if Chat.objects.get(pk=room_name).members.count() > 1:
+            return render(request, "home.html", context={'messages': messages,
+                                                         'room_name': room_name,
+                                                         'search_form': search_form,
+                                                         'message_list': Message.objects.filter(chat=room_name),
+                                                         'receiver': [i['id'] for i in
+                                                                      Chat.objects.get(pk=room_name).members.values(
+                                                                          'id') if i['id'] != request.user.id][0]})
+        else:
+            return render(request, "home.html", context={'messages': messages,
+                                                         'room_name': room_name,
+                                                         'search_form': search_form,
+                                                         'message_list': Message.objects.filter(chat=room_name),
+                                                         'receiver': request.user.id})
     else:
         return render(request, "home.html", context={'messages': messages,
                                                      'room_name': room_name,
@@ -131,6 +140,10 @@ def room(request, room_name):
     messages = (Message.objects.filter(author=request.user) | Message.objects.filter(receiver=request.user)) \
         .filter(id__in=Message.objects.values('chat__id').annotate(id=Max('id')).values('id')).order_by('-pub_date')
     if request.user.id in Chat.objects.get(pk=room_name).members.all().values_list(flat=True):
+<<<<<<< HEAD
         return render_search(request,messages, room_name)
+=======
+        return render_search(request, messages, room_name)
+>>>>>>> backend-develop
     else:
         return redirect("/", permanent=True)
