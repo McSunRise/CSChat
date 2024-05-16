@@ -40,6 +40,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json['message']
         sender = text_data_json['sender']
         receiver = text_data_json['receiver']
+        await self.create_message(sender, receiver, message)
         await self.channel_layer.group_send(self.room, {
             'type': 'chat_message',
             'message': message,
@@ -51,9 +52,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event['message']
         sender = event['sender']
         receiver = event['receiver']
-        new_msg = await self.create_message(sender, receiver, message)  # It is necessary to await creation of messages
+
         await self.send(text_data=json.dumps({
-            'message': new_msg.message,
-            'sender': new_msg.author.get_username(),
-            'receiver': new_msg.receiver.get_username()
+            'message': message,
+            'sender': sender,
+            'receiver': receiver
         }))

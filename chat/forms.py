@@ -63,5 +63,5 @@ class FeedbackForm(Form):
 
 class ChatCreateForm(Form):
     receiver = CharField(
-        widget=TextInput(attrs={'class': 'finder'})
+        widget=TextInput(attrs={'class': 'find-input'})
     )

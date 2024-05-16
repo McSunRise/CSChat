@@ -73,17 +73,25 @@
             </button>
 
 
-            <div class='find-input'>
-                <form method="post">
-                    {% csrf_token %}
-                    {% for field in search_form %}
-                        {{ field }}
-                    {% endfor %}
-                    {{ form.errors }}
-                    <button type="submit">Создать</button>
-                </form>
-            </div>
+            <form method="post" class="find-input">
+                {% csrf_token %}
+                {% for field in search_form %}
+                    {{ field }}
+                {% endfor %}
+                {{ form.errors }}
+                <button type="submit" class="create-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="lucide lucide-user-round-search">
+                        <circle cx="10" cy="8" r="5"/>
+                        <path d="M2 21a8 8 0 0 1 10.434-7.62"/>
+                        <circle cx="18" cy="18" r="3"/>
+                        <path d="m22 22-1.9-1.9"/>
+                    </svg>
+                </button>
+            </form>
         </div>
+
 
         <div class="actions hidden">
 
@@ -119,7 +127,7 @@
 
 
             {% for message in messages %}
-                <div class="chat">
+                <div class="chat {% if room_name == message.chat.pk %}current{% endif %}">
                     <p><a href="/chat/{{ message.chat.pk }}"> {% if message.author == message.receiver %} Saved
                         messages {% elif message.receiver != user %}
                         {{ message.receiver }} {% else %}
@@ -137,8 +145,11 @@
 
             <div id="chat">
                 {% for message in message_list %}
-                    <div class="messages-letters">
-                        <div class="message-info"> {{ message.author }} {{ message.pub_date }}</div>
+                    <div class="messages-letters {% if message.author != request.user %}receive{% endif %}">
+                        <div class="message-info">
+                            <div class="author">{{ message.author }}</div>
+                            <div>{{ message.pub_date }}</div>
+                        </div>
                         <p class="message-body"> {{ message.message }} </p>
                     </div>
                 {% endfor %}
@@ -185,12 +196,13 @@
 
             const formattedDate = currentDate.toLocaleString("en-US", dateOptions);
             const formattedTime = currentDate.toLocaleString("en-US", timeOptions).toLocaleLowerCase();
-            $('#chat').append(`<div class="messages-letters">
+            $('#chat').append(`<div class="messages-letters ${sender !== "{{ request.user }}" ? 'receive' : ''}">
         <div class="message-info">${sender}  <span>${formattedDate}, ${formattedTime}</span> </div>
         <p class="message-body"> ${message} </p>
     </div>`);
             $('.messages-letters').last().hide().fadeIn(800);
             const messages = document.querySelectorAll('.messages-letters');
+
             messages[messages.length - 1].scrollIntoView();
         }
 
@@ -202,6 +214,8 @@
             socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': {{ receiver }}}));
             messageInput.val('');
         }
+        const chatContainer = document.querySelector('#chat')
+        chatContainer.scrollTo(0, chatContainer.scrollHeight)
     </script>
 {% endif %}
 

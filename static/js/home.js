@@ -13,6 +13,6 @@ openButton.addEventListener('click',() => {
         openButton.classList.remove('opened')
     }
 })
-const messages = document.querySelectorAll('.messages-letters');
-messages[messages.length - 1].scrollIntoView()
+
+
 
