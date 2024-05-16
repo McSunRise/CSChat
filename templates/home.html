@@ -74,15 +74,15 @@
 
 
             <div class='find-input'>
-                <input class="finder">
-                    <form method="post">
+
+                <form method="post">
                     {% csrf_token %}
                     {% for field in search_form %}
                         {{ field }}
                     {% endfor %}
                     {{ form.errors }}
                     <button type="submit">Создать</button>
-                    </form>
+                </form>
             </div>
         </div>
 
@@ -139,7 +139,7 @@
             <div id="chat">
                 {% for message in message_list %}
                     <div class="messages-letters">
-                        <div class="message-info">{{ message.author }} {{ message.pub_date }}</div>
+                        <div class="message-info"> {{ message.author }} {{ message.pub_date }}</div>
                         <p class="message-body"> {{ message.message }} </p>
                     </div>
                 {% endfor %}
@@ -171,38 +171,38 @@
             const data = JSON.parse(e.data);
             const message = data['message'];
             const sender = data['sender']
-            
-                {#const currentDate = formatAMPM(new Date());#}
-                const currentDate = new Date();
-                let dateOptions = {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric"
-                };
-                let timeOptions = {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                };
 
-                const formattedDate = currentDate.toLocaleString("en-US", dateOptions);
-                const formattedTime = currentDate.toLocaleString("en-US", timeOptions).toLocaleLowerCase();
-                $('#chat').append(`<div class="messages-letters">
+            {#const currentDate = formatAMPM(new Date());#}
+            const currentDate = new Date();
+            let dateOptions = {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            };
+            let timeOptions = {
+                hour: "2-digit",
+                minute: "2-digit",
+            };
+
+            const formattedDate = currentDate.toLocaleString("en-US", dateOptions);
+            const formattedTime = currentDate.toLocaleString("en-US", timeOptions).toLocaleLowerCase();
+            $('#chat').append(`<div class="messages-letters">
         <div class="message-info">${sender}  <span>${formattedDate}, ${formattedTime}</span> </div>
         <p class="message-body"> ${message} </p>
     </div>`);
-                $('.messages-letters').last().hide().fadeIn(800);
-                const messages = document.querySelectorAll('.messages-letters');
-                messages[messages.length - 1].scrollIntoView();
-            }
-            
-            function sendMessage() {
-                const messageInput = $('#message-input');
-                const message = messageInput.val();
+            $('.messages-letters').last().hide().fadeIn(800);
+            const messages = document.querySelectorAll('.messages-letters');
+            messages[messages.length - 1].scrollIntoView();
+        }
+
+        function sendMessage() {
+            const messageInput = $('#message-input');
+            const message = messageInput.val();
 
 
-                socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': {{ receiver }}}));
-                messageInput.val('');
-            }
+            socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': {{ receiver }}}));
+            messageInput.val('');
+        }
     </script>
 {% endif %}
 
