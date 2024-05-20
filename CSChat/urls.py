@@ -27,5 +27,6 @@ urlpatterns = [
     path("auth/", views.login_page, name='login'),
     path("logout/", views.logout_page, name='logout'),
     path("auth/password_restore/", views.pass_restore, name='password_restore'),
-    path("chat/<int:room_name>", login_required(views.room), name='room')
+    path("chat/<int:room_name>", login_required(views.room), name='room'),
+    path("settings/", views.settings, name='settings')
 ]

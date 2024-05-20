@@ -1,0 +1,192 @@
+body {
+    background-image: url("https://pixelbox.ru/wp-content/uploads/2021/09/background-chat-vk-1.png");
+}
+.container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.tab-background {
+    z-index: -1;
+    position: absolute;
+    width: 50%;
+    height: 42px;
+    background: #fdfdfd;
+    transform: perspective(5px) rotateX(1deg) translateZ(-1px);
+    border-radius: 6px 6px 0 0;
+    -webkit-transform-origin: 0 0;
+    box-shadow: 15px -15px 30px rgba(0,0,0,0.32);
+}
+.card {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+}
+.tab-content {
+    display: flex;
+    margin: 5px 0 0 10px;
+    gap: 8px;
+    padding: 7px;
+    text-transform: uppercase;
+}
+
+.tab-label{
+    color: #747474;
+    font-size: 16px;
+    letter-spacing: -1px;
+    line-height: 20px;
+}
+.form-container {
+    padding: 12px;
+    background: #fdfdfd;
+    border-radius: 0 6px 0 0;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-bottom: 30px;
+}
+
+.fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-top:26px;
+}
+.form-btn{
+    width: 100%;
+    height: 48px;
+    padding: 0 20px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    line-height: 40px;
+    text-align: center;
+    background-color: #87314e;
+    border: none;
+    opacity: 1;
+    cursor: pointer;
+    border-radius: 0 0 6px 6px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease-in-out;
+}
+.form-btn:hover{
+    background-color: #a63957;
+}
+.form-input{
+    width: 100%;
+    height: 32px;
+    padding: 0px 10px;
+    background-color: rgba(0,0,0,0.03);
+    border: none;
+    display: inline;
+    color: #303030;
+    font-size: 16px;
+    font-weight: 400;
+    float: left;
+    border:0;
+    outline:0;
+    box-shadow: inset 1px 1px 0px rgba(0,0,0,0.05), 1px 1px 0px rgba(255,255,255,1);
+}
+.field-photo{
+    display: flex;
+    flex-direction: column;
+    margin-top:26px;
+    justify-content: center;
+    align-items: center;
+}
+.photo{
+    width: 180px;
+    height: 180px;
+    border-radius: 30px;
+}
+.field-photo {
+    position: relative;
+    width: 100%;
+    color: #032942;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+    line-height: 1.5;
+    text-transform: uppercase;
+}
+
+.wrapper-upload {
+    margin-top: 10px;
+    position: relative;
+    width: 200px;
+    text-align: center;
+}
+
+.wrapper-upload .profile-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.wrapper-upload input[type="file"],
+.wrapper-upload input[type="hidden"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.wrapper-upload .upload-btn {
+    display: inline-block;
+    padding: 8px 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background-color: #87314e;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.wrapper-upload .upload-btn:hover {
+    background-color: #a03e63;
+}
+.form-input:focus{
+    background-color: #FFFFE0;
+}
+.field label{
+    width: 100%;
+    color: #032942;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+    line-height: 1.5;
+    text-transform: uppercase;
+}
+
+.btn{
+    height: 36px;
+    width: 100%;
+    max-width: 180px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    background-color: #87314e;
+    border: none;
+    opacity: 1;
+    cursor: pointer;
+    border-radius: 6px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease-in-out;
+}

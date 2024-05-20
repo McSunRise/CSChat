@@ -143,3 +143,7 @@ def room(request, room_name):
         return render_search(request, messages, room_name)
     else:
         return redirect("/", permanent=True)
+
+
+def settings(request):
+    return render(request, 'settings.html')
