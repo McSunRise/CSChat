@@ -104,7 +104,7 @@
                 </svg>
                 <span>Настройки</span>
             </a>
-        
+
             {% csrf_token %}
             <a href="/logout" class="choice">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -149,8 +149,20 @@
 
         </div>
     </div>
-
+    
     <div class="middle-column">
+        <div class="user-info">
+            <div class="info-container">
+                <img class="user-image" src="https://i.pinimg.com/originals/31/da/4b/31da4bdcd682451662b4dd912b4c161f.jpg"/>
+                <div class="user-name">
+                    {% if message.author == message.receiver %} Saved
+                        messages {% elif message.receiver != user %}
+                        {{ message.receiver }} {% else %}
+                        {{ message.author }} {% endif %}
+                </div>
+            </div>
+
+        </div>
         {% if room_name != 0 %}
 
             <div id="chat">
