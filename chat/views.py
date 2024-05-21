@@ -5,18 +5,18 @@ from django.http import HttpResponse
 import hashlib, datetime
 from .forms import *
 from .models import Message, Chat, User
-import re
+import re, os
 from minio import Minio
 
 client = Minio(
-        "localhost:9000",
-        access_key="adminsunrise",
-        secret_key="adminendervither31",
+        os.getenv('MINIO_ENDPOINT'),
+        access_key=os.getenv('MINIO_ACCESS_KEY'),
+        secret_key=os.getenv('MINIO_SECRET_KEY'),
         secure=False,
         cert_check=False
     )
 try:
-    client.make_bucket("files")
+    client.make_bucket(os.getenv('MINIO_BUCKET_NAME'))
 except:
     pass
 
@@ -44,15 +44,15 @@ def render_by_rn(request, messages, room_name, search_form=ChatCreateForm):
                                                          'room_name': room_name,
                                                          'search_form': search_form,
                                                          'message_list': Message.objects.filter(chat=room_name),
-                                                         'receiver': [i['id'] for i in
+                                                         'receiver': [i for i in
                                                                       Chat.objects.get(pk=room_name).members.values(
-                                                                          'id') if i['id'] != request.user.id][0]})
+                                                                          'id', 'profile_filename', 'username') if i['id'] != request.user.id][0]})
         else:
             return render(request, "home.html", context={'messages': messages,
                                                          'room_name': room_name,
                                                          'search_form': search_form,
                                                          'message_list': Message.objects.filter(chat=room_name),
-                                                         'receiver': request.user.id})
+                                                         'receiver': request.user})
     else:
         return render(request, "home.html", context={'messages': messages,
                                                      'room_name': room_name,
@@ -179,7 +179,7 @@ def room(request, room_name):
 
 def settings(request):
     if request.method == "GET":
-        return render(request, "settings.html", context={'form': SettingsForm()})
+        return render(request, "settings.html", context={'form': SettingsForm(), 'feedback_form': FeedbackForm()})
     else:
         form = SettingsForm(request.POST, request.FILES)
         if form.is_valid():
@@ -195,20 +195,21 @@ def settings(request):
                 new_username = user.username
             else:
                 form.add_error('username', 'Новое имя содержит недопустимые символы')
-                return render(request, 'settings.html', context={'form': form})
+                return render(request, 'settings.html', context={'form': form,'feedback_form': FeedbackForm()})
             if not request.user.check_password(old_pass) and old_pass != '':
                 form.add_error('old_pass', 'Пароль неверный')
-                return render(request, 'settings.html', context={'form': form})
+                return render(request, 'settings.html', context={'form': form,'feedback_form': FeedbackForm()})
             if old_pass == new_pass and new_pass != '':
                 form.add_error('new_pass', 'Новый пароль не может совпадать со старым')
-                return render(request, 'settings.html', context={'form': form})
+                return render(request, 'settings.html', context={'form': form,'feedback_form': FeedbackForm()})
             if new_pass is not None and old_pass is None:
                 form.add_error('new_pass', 'Введите старый пароль')
             if new_pass != '':
                 user.set_password(new_pass)
             if new_pfp is not None:
                 pfp_url = save_to_min(request, new_pfp)
-                client.remove_object('files', object_name=user.profile_filename)
+                if user.profile_filename:
+                    client.remove_object('files', object_name=user.profile_filename)
                 user.profile_filename = pfp_url
             user.username = new_username
             user.save()

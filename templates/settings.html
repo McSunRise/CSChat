@@ -9,6 +9,54 @@
 </head>
 <body>
 <main class="container">
+    <div id="buttons" class="content-box">
+        <div class="help-head">
+            <button class="close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                     class="lucide lucide-x">
+                    <path d="M18 6 6 18"/>
+                    <path d="m6 6 12 12"/>
+                </svg>
+            </button>
+            <p>Нужна помощь?</p>
+        </div>
+
+        <hr>
+
+        <button class="secondary-button">
+            Контактная помощь
+        </button>
+
+        <hr>
+
+        <a href="/" class="log-btn">
+            На главную
+        </a>
+    </div>
+    <div id="feedback-form" class="content-box hidden">
+
+        <button class="back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="lucide lucide-chevron-left">
+                <path d="m15 18-6-6 6-6"/>
+            </svg>
+        </button>
+
+        <form method="post" class="feedback-fields-cnt">
+            {% csrf_token %}
+            <div class="feedback-field">
+                <label for="email">Почта</label>
+                {{ feedback_form.email }}
+            </div>
+            <div class="feedback-field">
+                <label for="feedback">Ваше обращение</label>
+                {{ feedback_form.feedback }}
+            </div>
+            <button type="submit" class="field-btn">Отправить</button>
+        </form>
+    </div>
     <div class="card">
         <div class="tab-background"></div>
 
@@ -24,7 +72,7 @@
         </div>
 
         <div class="form-container">
-
+            <button class="etc-btn"></button>
             <form id="login-form" method="post" class="form" enctype="multipart/form-data">
                 {% csrf_token %}
 
@@ -69,6 +117,7 @@
     </div>
 </main>
 
+<script type="module" src="{% static 'js/settings.js' %}"></script>
 
 </body>
 </html>
