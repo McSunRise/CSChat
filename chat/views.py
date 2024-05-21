@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.db.models import Max, Count
+from django.db.models import Max
 from .forms import *
 from .models import Message, Chat, User
+import re
 
 
 def render_by_rn(request, messages, room_name, search_form=ChatCreateForm):
@@ -146,4 +147,21 @@ def room(request, room_name):
 
 
 def settings(request):
-    return render(request, 'settings.html')
+    if request.method == "GET":
+        return render(request, "settings.html", context={'form': SettingsForm()})
+    else:
+        form = SettingsForm(request.POST)
+        form.username = request.user.username
+        if form.is_valid():
+            new_username = form.cleaned_data['username']
+            r = re.compile("^[\w.@+-]+\Z")
+            print(r.match(new_username))
+            if r.match(new_username):
+                request.user.username = new_username
+            else:
+                form.add_error('username', 'Новое имя содержит недопустимые символы')
+                return render(request, 'settings.html', context={'form': form})
+            request.user.save()
+        else:
+            print('Shit')
+        return redirect("/", permanent=True)

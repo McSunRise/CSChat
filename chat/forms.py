@@ -1,4 +1,4 @@
-from django.forms import TextInput, ModelForm, CharField, PasswordInput, Form, EmailInput, Textarea
+from django.forms import TextInput, ModelForm, CharField, PasswordInput, Form, EmailInput, Textarea, ImageField
 from .models import User, Message
 
 
@@ -65,3 +65,11 @@ class ChatCreateForm(Form):
     receiver = CharField(
         widget=TextInput(attrs={'class': 'find-input'})
     )
+
+
+class SettingsForm(Form):
+    username = CharField(
+        widget=TextInput(attrs={'class': 'form-input'}),
+    )
+    profile_picture = ImageField()
+    background = ImageField()
