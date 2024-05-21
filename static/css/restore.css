@@ -1,0 +1,88 @@
+body {
+    background-image: url("https://pixelbox.ru/wp-content/uploads/2021/09/background-chat-vk-1.png");
+}
+.container {
+    display: flex;
+    flex-direction:  row-reverse;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.submit-button{
+    width: 304px;
+    height: 36px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 16px;
+}
+.form-container{
+    padding: 12px;
+    height: 380px;
+    background: #fdfdfd;
+    border-radius: 0 6px 6px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color:#032942;
+    gap: 32px;
+    font-weight: 700;
+    font-size: 14px;
+}
+.icon{
+    width: 128px;
+    height: 128px;
+}
+.text{
+    text-align: center;
+}
+.back-btn{
+    border: none;
+    height: 24px;
+    line-height: 24px;
+    background-color: transparent;
+    cursor: pointer;
+    opacity: 0.5;
+    text-decoration: none;
+    color:grey;
+}
+
+.tab-content {
+    display: flex;
+    margin: 5px 0 0 10px;
+    gap: 8px;
+    padding: 7px;
+    text-transform: uppercase;
+}
+.tab-label{
+    color: #747474;
+    font-size: 16px;
+    letter-spacing: -1px;
+    line-height: 20px;
+}
+.tab-background {
+    z-index: -1;
+    position: absolute;
+    width: 50%;
+    height: 42px;
+    background: #fdfdfd;
+    transform: perspective(5px) rotateX(1deg) translateZ(-1px);
+    border-radius: 6px 6px 0 0;
+    -webkit-transform-origin: 0 0;
+    box-shadow: 15px -15px 30px rgba(0,0,0,0.32);
+}
+.card {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+}
+.back-btn-div{
+    width: 100%;
+}
