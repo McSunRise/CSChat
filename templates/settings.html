@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="{% static 'css/settings.css' %}">
 </head>
 <body>
-
 <main class="container">
     <div class="card">
         <div class="tab-background"></div>
@@ -26,16 +25,18 @@
 
         <div class="form-container">
 
-            <form id="login-form" method="post" class="form">
+            <form id="login-form" method="post" class="form" enctype="multipart/form-data">
+                {% csrf_token %}
 
                 <div class="fields-container">
 
                     <div class="field-photo">
                         <label for="username">Фото профиля</label>
                         <img class="photo"
-                             src="https://i.pinimg.com/originals/31/da/4b/31da4bdcd682451662b4dd912b4c161f.jpg">
+                             src="http://localhost:8000/images/{{ request.user.profile_filename }}">
                         <div class="wrapper-upload ">
                             <input id="file" type="file" name="file" class="d-none">
+                            {{ form.profile_picture }}
                             <input id="file-deleted" type="hidden" name="file-deleted" value="">
                             <a class="btn btn-info btn-outline upload-btn btn-sm" onclick="$('#file').click()">
                                 Загрузить
@@ -46,17 +47,18 @@
 
                     <div class="field">
                         <label for="username">Имя пользователя</label>
-                        <input class="form-input" placeholder="{{request.user.username}}">
+                        {{ form.username }}
                     </div>
 
                     <div class="field">
                         <label for="password">старый пароль</label>
-                        <input class="form-input">
+                        {{ form.old_pass }}
                     </div>
                     <div class="field">
                         <label for="password">новый пароль</label>
-                        <input class="form-input">
+                        {{ form.new_pass }}
                     </div>
+                    {{ form.errors }}
                 </div>
 
             </form>

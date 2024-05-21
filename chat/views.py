@@ -1,8 +1,40 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.db.models import Max, Count
+from django.db.models import Max
+from django.http import HttpResponse
+import hashlib, datetime
 from .forms import *
 from .models import Message, Chat, User
+import re
+from minio import Minio
+
+client = Minio(
+        "localhost:9000",
+        access_key="adminsunrise",
+        secret_key="adminendervither31",
+        secure=False,
+        cert_check=False
+    )
+try:
+    client.make_bucket("files")
+except:
+    pass
+
+
+def get_image(request, filename):
+    response = client.get_object('files', object_name=filename)
+    return HttpResponse(response.read(decode_content=True), content_type='image/jpeg')
+
+
+def save_to_min(request, file):
+    filename = hashlib.sha256(str(datetime.datetime.now().timestamp().hex()).encode('utf-8')).hexdigest()
+
+    # Upload data with content-type.
+    result = client.put_object(
+        "files", object_name=filename, data=file, length=file.size,
+        content_type="image/jpeg"
+    )
+    return filename
 
 
 def render_by_rn(request, messages, room_name, search_form=ChatCreateForm):
@@ -146,4 +178,38 @@ def room(request, room_name):
 
 
 def settings(request):
-    return render(request, 'settings.html')
+    if request.method == "GET":
+        return render(request, "settings.html", context={'form': SettingsForm()})
+    else:
+        form = SettingsForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_username = form.cleaned_data['username']
+            old_pass = form.cleaned_data['old_pass']
+            new_pass = form.cleaned_data['new_pass']
+            new_pfp = form.cleaned_data['profile_picture']
+            user = User.objects.get(pk=request.user.id)
+            r = re.compile("^[\w.@+-]+\Z")
+            if r.match(new_username):
+                pass
+            elif new_username == '':
+                new_username = user.username
+            else:
+                form.add_error('username', 'Новое имя содержит недопустимые символы')
+                return render(request, 'settings.html', context={'form': form})
+            if not request.user.check_password(old_pass) and old_pass != '':
+                form.add_error('old_pass', 'Пароль неверный')
+                return render(request, 'settings.html', context={'form': form})
+            if old_pass == new_pass and new_pass != '':
+                form.add_error('new_pass', 'Новый пароль не может совпадать со старым')
+                return render(request, 'settings.html', context={'form': form})
+            if new_pass is not None and old_pass is None:
+                form.add_error('new_pass', 'Введите старый пароль')
+            if new_pass != '':
+                user.set_password(new_pass)
+            if new_pfp is not None:
+                pfp_url = save_to_min(request, new_pfp)
+                client.remove_object('files', object_name=user.profile_filename)
+                user.profile_filename = pfp_url
+            user.username = new_username
+            user.save()
+        return redirect("/settings", permanent=True)
