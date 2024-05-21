@@ -101,7 +101,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -144,6 +143,14 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+MEDIA_ROOT = os.getenv('MINIO_ENDPOINT')
+MEDIA_URL = os.getenv('MINIO_ENDPOINT') + '/'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_STORAGE_BUCKET_NAME = os.getenv('MINIO_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.getenv('MINIO_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.getenv('MINIO_SECRET_KEY')
+AWS_S3_ENDPOINT_URL = os.getenv('MINIO_ENDPOINT')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

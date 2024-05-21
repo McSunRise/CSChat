@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+</head>
+<body>
+<main class="container">
+    <div class="card">
+        <div class="tab-background"></div>
+
+        <div class="tab-content">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="#87314e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="lucide lucide-settings">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+
+            <h2 class="tab-label">Settings</h2>
+        </div>
+
+        <div class="form-container">
+
+            <form id="login-form" method="post" class="form" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="fields-container">
+
+                    <div class="field-photo">
+                        <label for="username">Фото профиля</label>
+                        <img class="photo"
+                             src="http://localhost:8000/images/{{ request.user.profile_filename }}">
+                        <div class="wrapper-upload ">
+                            <input id="file" type="file" name="file" class="d-none">
+                            {{ form.profile_picture }}
+                            <input id="file-deleted" type="hidden" name="file-deleted" value="">
+                            <a class="btn btn-info btn-outline upload-btn btn-sm" onclick="$('#file').click()">
+                                Загрузить
+                            </a>
+                        </div>
+                        
+                    </div>
+
+                    <div class="field">
+                        <label for="username">Имя пользователя</label>
+                        {{ form.username }}
+                    </div>
+
+                    <div class="field">
+                        <label for="password">старый пароль</label>
+                        {{ form.old_pass }}
+                    </div>
+                    <div class="field">
+                        <label for="password">новый пароль</label>
+                        {{ form.new_pass }}
+                    </div>
+                    {{ form.errors }}
+                </div>
+
+            </form>
+        </div>
+        <div class="btn-container">
+            <button type="submit" form="login-form" class="form-btn">Изменить</button>
+        </div>
+    </div>
+</main>
+
+
+</body>
+</html>

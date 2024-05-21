@@ -95,6 +95,16 @@
 
         <div class="actions hidden">
 
+            <a href="{% url 'settings' %}" class="choice">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="#aaaaaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="lucide lucide-settings">
+                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <span>Настройки</span>
+            </a>
+        
             {% csrf_token %}
             <a href="/logout" class="choice">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -194,12 +204,14 @@
                 minute: "2-digit",
             };
 
+
             const formattedDate = currentDate.toLocaleString("en-US", dateOptions);
             const formattedTime = currentDate.toLocaleString("en-US", timeOptions).toLocaleLowerCase();
             $('#chat').append(`<div class="messages-letters ${sender !== "{{ request.user }}" ? 'receive' : ''}">
         <div class="message-info">${sender}  <span>${formattedDate}, ${formattedTime}</span> </div>
         <p class="message-body"> ${message} </p>
     </div>`);
+
             $('.messages-letters').last().hide().fadeIn(800);
             const messages = document.querySelectorAll('.messages-letters');
 
@@ -214,6 +226,7 @@
             socket.send(JSON.stringify({'sender': '{{ user }}', 'message': message, 'receiver': {{ receiver }}}));
             messageInput.val('');
         }
+
         const chatContainer = document.querySelector('#chat')
         chatContainer.scrollTo(0, chatContainer.scrollHeight)
     </script>

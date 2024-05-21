@@ -15,9 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns, static
 from django.contrib.auth.decorators import login_required
-from django.urls import path, re_path
+from django.urls import path
 from chat import views
+from CSChat import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,5 +29,10 @@ urlpatterns = [
     path("auth/", views.login_page, name='login'),
     path("logout/", views.logout_page, name='logout'),
     path("auth/password_restore/", views.pass_restore, name='password_restore'),
-    path("chat/<int:room_name>", login_required(views.room), name='room')
+    path("chat/<int:room_name>", login_required(views.room), name='room'),
+    path("settings/", login_required(views.settings), name='settings'),
+    path("images/<str:filename>", views.get_image, name='images')
 ]
+
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

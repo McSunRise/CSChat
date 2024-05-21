@@ -1,4 +1,4 @@
-from django.forms import TextInput, ModelForm, CharField, PasswordInput, Form, EmailInput, Textarea
+from django.forms import TextInput, ModelForm, CharField, PasswordInput, Form, EmailInput, Textarea, FileInput, ImageField
 from .models import User, Message
 
 
@@ -64,4 +64,26 @@ class FeedbackForm(Form):
 class ChatCreateForm(Form):
     receiver = CharField(
         widget=TextInput(attrs={'class': 'find-input'})
+    )
+
+
+class SettingsForm(Form):
+
+    username = CharField(
+        widget=TextInput(attrs={'class': 'form-input'}),
+        required=False
+    )
+
+    profile_picture = ImageField(
+        widget=FileInput(),
+        required=False
+    )
+
+    old_pass = CharField(
+        widget=PasswordInput(attrs={'class': 'form-input'}),
+        required=False
+    )
+    new_pass = CharField(
+        widget=PasswordInput(attrs={'class': 'form-input'}),
+        required=False
     )

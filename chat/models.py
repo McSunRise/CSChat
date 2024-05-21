@@ -16,6 +16,7 @@ class User(AbstractUser):
         validators=[username_validator],
         error_messages={'unique': 'A user with that username already exists.'}
     )
+    profile_filename = models.CharField(blank=True)
 
     def create_user(self, username, email, password):
         self.username = username
